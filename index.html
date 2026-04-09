@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)file:///Users/emilanaewell/Downloads/index%20(1).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIVID Productions</title>
+  <link href="./VIVID Productions_files/css2" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f0e8;
+      --vivid-red: #ff2d20;
+      --vivid-yellow: #ffd200;
+      --vivid-cyan: #00e5ff;
+      --vivid-green: #39ff14;
+      --mid: #1a1a1a;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--vivid-yellow);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, background 0.2s ease, width 0.2s, height 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor.grow { width: 40px; height: 40px; background: var(--vivid-cyan); }
+
+    /* ——— NAV ——— */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 3rem;
+      mix-blend-mode: difference;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.2em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--vivid-yellow); }
+
+    /* ——— HERO ——— */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6rem 3rem 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--vivid-cyan);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 12vw, 11rem);
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+    .hero-title .accent { color: var(--vivid-red); display: block; }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.55);
+      max-width: 340px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.7s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      display: flex; gap: 1rem; align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.9s forwards;
+    }
+
+    .btn-primary {
+      background: var(--vivid-yellow);
+      color: var(--black);
+      padding: 0.85rem 2.2rem;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--vivid-red); color: var(--white); transform: translateY(-2px); }
+
+    .btn-ghost {
+      color: var(--white);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,240,232,0.3);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--vivid-cyan); border-color: var(--vivid-cyan); }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--vivid-red) 0%, #7c00ff 50%, var(--vivid-cyan) 100%);
+      opacity: 0.9;
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0; z-index: 1;
+      background-image:
+        linear-gradient(rgba(245,240,232,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,240,232,0.07) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-big-v {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 32vw;
+      color: rgba(0,0,0,0.18);
+      line-height: 1;
+      user-select: none;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    .hero-issue-badge {
+      position: absolute; bottom: 3rem; right: 3rem; z-index: 3;
+      width: 110px; height: 110px;
+      border: 2px solid var(--vivid-yellow);
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--vivid-yellow);
+      animation: spin 20s linear infinite;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .hero-issue-badge span { font-size: 1.6rem; display: block; }
+
+    /* ——— MARQUEE ——— */
+    .marquee-wrap {
+      overflow: hidden;
+      background: var(--vivid-yellow);
+      padding: 0.6rem 0;
+    }
+    .marquee-track {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: marquee 18s linear infinite;
+    }
+    .marquee-item {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--black);
+      padding: 0 2rem;
+    }
+    .marquee-sep { color: var(--vivid-red); }
+
+    /* ——— ABOUT ——— */
+    #about {
+      padding: 8rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 6rem;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .about-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--vivid-cyan);
+      margin-bottom: 1.5rem;
+    }
+    .about-heading {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 5vw, 5rem);
+      line-height: 0.9;
+      margin-bottom: 2rem;
+    }
+    .about-heading em { color: var(--vivid-red); font-style: normal; }
+    .about-text {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: rgba(245,240,232,0.65);
+      margin-bottom: 1.5rem;
+    }
+    .about-stats {
+      display: flex; gap: 3rem; margin-top: 3rem;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--vivid-yellow);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      margin-top: 0.3rem;
+    }
+    .about-visual {
+      position: relative;
+      aspect-ratio: 4/5;
+      background: var(--mid);
+      overflow: hidden;
+    }
+    .about-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(45deg, #ff2d20 0%, #7c00ff 100%);
+      opacity: 0.5;
+    }
+    .about-visual-text {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      gap: 0.5rem;
+    }
+    .av-line {
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 1;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      opacity: 0.12;
+      transform: rotate(-15deg);
+      white-space: nowrap;
+    }
+    .about-corner {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      width: 80px; height: 80px;
+      border: 2px solid var(--vivid-cyan);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--vivid-cyan);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* ——— FEATURES ——— */
+    #features {
+      padding: 5rem 3rem 8rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .section-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 4rem;
+      border-top: 1px solid rgba(245,240,232,0.1);
+      padding-top: 2rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 1;
+    }
+    .section-num {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      color: rgba(245,240,232,0.07);
+      line-height: 1;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(245,240,232,0.08);
+    }
+    .feature-card {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--vivid-red);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .feature-card:hover { background: var(--mid); }
+    .feature-card:hover::after { transform: scaleX(1); }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .feature-num {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: var(--vivid-cyan);
+      margin-bottom: 1rem;
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.03em;
+    }
+    .feature-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(245,240,232,0.5);
+    }
+
+    /* ——— LATEST ISSUE ——— */
+    #latest {
+      background: var(--mid);
+      padding: 6rem 3rem;
+    }
+    .latest-inner {
+      max-width: 1300px; margin: 0 auto;
+    }
+    .latest-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--vivid-red);
+      margin-bottom: 1rem;
+    }
+    .latest-heading {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 6rem);
+      line-height: 0.9;
+      margin-bottom: 4rem;
+    }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .article-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: var(--black);
+      cursor: none;
+    }
+    .article-card:first-child { aspect-ratio: 3/4; }
+    .article-bg {
+      position: absolute; inset: 0;
+      transition: transform 0.5s ease;
+    }
+    .article-card:hover .article-bg { transform: scale(1.05); }
+    .article-bg-1 { background: linear-gradient(160deg, #ff2d20, #7c00ff 80%); }
+    .article-bg-2 { background: linear-gradient(160deg, #00e5ff, #0070ff 80%); }
+    .article-bg-3 { background: linear-gradient(160deg, #39ff14, #007700 80%); }
+    .article-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+      opacity: 0.35;
+    }
+    .article-content {
+      position: absolute; inset: 0;
+      padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 40%, transparent 100%);
+    }
+    .article-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--vivid-yellow);
+      margin-bottom: 0.5rem;
+    }
+    .article-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .article-card:first-child .article-title { font-size: 2.2rem; }
+    .article-meta {
+      font-size: 0.7rem;
+      color: rgba(245,240,232,0.45);
+      letter-spacing: 0.1em;
+    }
+
+    /* ——— SUBMIT ——— */
+    #submit {
+      padding: 8rem 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .submit-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--vivid-green);
+      margin-bottom: 1.5rem;
+    }
+    .submit-heading {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 7rem);
+      line-height: 0.9;
+      margin-bottom: 1.5rem;
+    }
+    .submit-heading .line2 { color: var(--vivid-red); }
+    .submit-sub {
+      font-size: 1rem;
+      color: rgba(245,240,232,0.55);
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+    .submit-form {
+      display: flex;
+      gap: 0;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .submit-form input {
+      flex: 1;
+      background: var(--mid);
+      border: none;
+      outline: none;
+      padding: 1rem 1.5rem;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      border: 1px solid rgba(245,240,232,0.1);
+      border-right: none;
+    }
+    .submit-form input::placeholder { color: rgba(245,240,232,0.3); }
+    .submit-form button {
+      background: var(--vivid-red);
+      color: var(--white);
+      border: none;
+      padding: 1rem 2rem;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      cursor: none;
+      transition: background 0.2s;
+    }
+    .submit-form button:hover { background: var(--vivid-yellow); color: var(--black); }
+
+    /* ——— FOOTER ——— */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(245,240,232,0.08);
+      padding: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      color: var(--white);
+    }
+    .footer-logo span { color: var(--vivid-red); }
+    .footer-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--vivid-cyan); }
+    .footer-copy {
+      font-size: 0.7rem;
+      color: rgba(245,240,232,0.25);
+      letter-spacing: 0.1em;
+    }
+
+    /* ——— ANIMATIONS ——— */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.18; transform: scale(1); }
+      50% { opacity: 0.28; transform: scale(1.04); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ——— RESPONSIVE ——— */
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .articles-grid { grid-template-columns: 1fr; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor" style="left: 714px; top: 168px;"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="file:///Users/emilanaewell/Downloads/index%20(1).html#">VIVID</a>
+    <ul class="nav-links">
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#about">About</a></li>
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#features">What We Do</a></li>
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#latest">Latest Issue</a></li>
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#submit">Submit Work</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <p class="hero-tag">Art &amp; Creativity Magazine</p>
+      <h1 class="hero-title">
+        VIVID
+        <span class="accent">Productions</span>
+      </h1>
+      <p class="hero-sub">Where bold ideas and raw creativity collide. Art, design, expression — unfiltered.</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="file:///Users/emilanaewell/Downloads/index%20(1).html#latest">Read Now</a>
+        <a class="btn-ghost" href="file:///Users/emilanaewell/Downloads/index%20(1).html#submit">Submit Your Art →</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-grid-lines"></div>
+      <div class="hero-big-v">V</div>
+      <div class="hero-issue-badge">
+        <span>01</span>
+        ISSUE<br>2025
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">VIVID PRODUCTIONS</span>
+      <span class="marquee-item marquee-sep">✦</span>
+      <span class="marquee-item">ART LIVES HERE</span>
+      <span class="marquee-item marquee-sep">✦</span>
+      <span class="marquee-item">CREATE BOLDLY</span>
+      <span class="marquee-item marquee-sep">✦</span>
+      <span class="marquee-item">EVERY VISION MATTERS</span>
+      <span class="marquee-item marquee-sep">✦</span>
+      <span class="marquee-item">VIVID PRODUCTIONS</span>
+      <span class="marquee-item marquee-sep">✦</span>
+      <span class="marquee-item">ART LIVES HERE</span>
+      <span class="marquee-item marquee-sep">✦</span>
+      <span class="marquee-item">CREATE BOLDLY</span>
+      <span class="marquee-item marquee-sep">✦</span>
+      <span class="marquee-item">EVERY VISION MATTERS</span>
+      <span class="marquee-item marquee-sep">✦</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div>
+      <p class="about-label">Who We Are</p>
+      <h2 class="about-heading" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+        Made By<br>
+        <em>Creators,</em><br>
+        For Creators.
+      </h2>
+      <p class="about-text">VIVID Productions is an independent art and creativity magazine born from a simple idea: every young artist deserves a stage. We celebrate original work — illustrations, photography, design, writing, and everything in between.</p>
+      <p class="about-text">No gatekeepers. No filters. Just pure creative energy on every page.</p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-num" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">12+</div>
+          <div class="stat-label">Contributors</div>
+        </div>
+        <div>
+          <div class="stat-num" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">6</div>
+          <div class="stat-label">Issues</div>
+        </div>
+        <div>
+          <div class="stat-num" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">100%</div>
+          <div class="stat-label">Independent</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="about-visual-text">
+        <div class="av-line">CREATE</div>
+        <div class="av-line">INSPIRE</div>
+        <div class="av-line">VIVID</div>
+        <div class="av-line">CREATE</div>
+        <div class="av-line">INSPIRE</div>
+      </div>
+      <div class="about-corner">ART<br>ZINE</div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-header">
+      <h2 class="section-title">What We<br>Publish</h2>
+      <span class="section-num">02</span>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+        <span class="feature-icon">🎨</span>
+        <div class="feature-num">01</div>
+        <h3 class="feature-title">Visual Art</h3>
+        <p class="feature-desc">Illustrations, paintings, digital art, and mixed media — if you made it, we want to see it.</p>
+      </div>
+      <div class="feature-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+        <span class="feature-icon">📸</span>
+        <div class="feature-num">02</div>
+        <h3 class="feature-title">Photography</h3>
+        <p class="feature-desc">From street shots to portraits to abstract captures — photography that stops you mid-scroll.</p>
+      </div>
+      <div class="feature-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+        <span class="feature-icon">✍️</span>
+        <div class="feature-num">03</div>
+        <h3 class="feature-title">Writing</h3>
+        <p class="feature-desc">Short stories, poetry, essays, and opinion pieces from bold young voices.</p>
+      </div>
+      <div class="feature-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+        <span class="feature-icon">🖋️</span>
+        <div class="feature-num">04</div>
+        <h3 class="feature-title">Design</h3>
+        <p class="feature-desc">Typography, branding, layouts, and experimental graphic design that pushes limits.</p>
+      </div>
+      <div class="feature-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+        <span class="feature-icon">🎭</span>
+        <div class="feature-num">05</div>
+        <h3 class="feature-title">Features</h3>
+        <p class="feature-desc">Interviews, spotlights, and deep dives into artists we can't stop thinking about.</p>
+      </div>
+      <div class="feature-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+        <span class="feature-icon">🌐</span>
+        <div class="feature-num">06</div>
+        <h3 class="feature-title">Culture</h3>
+        <p class="feature-desc">Art events, reviews, and the conversations that are shaping creative culture right now.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST ISSUE -->
+  <section id="latest">
+    <div class="latest-inner">
+      <p class="latest-label">↓ Now Available</p>
+      <h2 class="latest-heading">Latest<br>Issue</h2>
+      <div class="articles-grid">
+        <div class="article-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+          <div class="article-bg article-bg-1"></div>
+          <div class="article-noise"></div>
+          <div class="article-content">
+            <div class="article-tag">Cover Story</div>
+            <h3 class="article-title">The New Wave of Digital Surrealism</h3>
+            <p class="article-meta">8 min read · Visual Art</p>
+          </div>
+        </div>
+        <div class="article-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+          <div class="article-bg article-bg-2"></div>
+          <div class="article-noise"></div>
+          <div class="article-content">
+            <div class="article-tag">Photography</div>
+            <h3 class="article-title">Urban Light Studies</h3>
+            <p class="article-meta">5 min read</p>
+          </div>
+        </div>
+        <div class="article-card" style="opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s;">
+          <div class="article-bg article-bg-3"></div>
+          <div class="article-noise"></div>
+          <div class="article-content">
+            <div class="article-tag">Writing</div>
+            <h3 class="article-title">Colors I Can't Name</h3>
+            <p class="article-meta">3 min read · Poetry</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBMIT -->
+  <section id="submit">
+    <p class="submit-eyebrow">Open Submissions</p>
+    <h2 class="submit-heading">
+      YOUR ART<br>
+      <span class="line2">BELONGS HERE</span>
+    </h2>
+    <p class="submit-sub">We're always looking for the next great submission. Drop your email and we'll send you our submission guide.</p>
+    <div class="submit-form">
+      <input type="email" placeholder="your@email.com">
+      <button type="button">SUBMIT</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">VIVID<span>.</span></div>
+    <ul class="footer-links">
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#about">About</a></li>
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#features">Sections</a></li>
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#latest">Issues</a></li>
+      <li><a href="file:///Users/emilanaewell/Downloads/index%20(1).html#submit">Contact</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 VIVID Productions</p>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .feature-card, .article-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card, .article-card, .about-heading, .stat-num').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+
+
+</body></html>
